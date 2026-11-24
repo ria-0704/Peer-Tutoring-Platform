@@ -439,3 +439,101 @@
     -fx-font-size: 11px;
     -fx-font-weight: bold;
 }
+
+/* ── Dashboard Quick Action Cards ─────────────────────────────── */
+.action-card {
+    -fx-cursor: hand;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-border-color: #d8cfee;
+    -fx-border-radius: 12;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 6, 0, 0, 2);
+    -fx-transition: all 0.15s;
+}
+
+.action-card:hover {
+    -fx-background-color: #ede7f6;
+    -fx-border-color: #7c5cbf;
+    -fx-effect: dropshadow(gaussian, rgba(124,92,191,0.22), 14, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.action-card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3d2b7a;
+}
+
+/* ── Redesigned Tutor Listing Card ───────────────────────────── */
+.tutor-listing-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-border-color: #e8e0f8;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.tutor-listing-card:hover {
+    -fx-border-color: #7c5cbf;
+    -fx-effect: dropshadow(gaussian, rgba(124,92,191,0.2), 14, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+.tutor-card-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c2c54;
+}
+
+/* ── Tutor Avatar Circle ─────────────────────────────────────── */
+.tutor-avatar {
+    -fx-background-color: linear-gradient(to bottom right, #7c5cbf, #9c7fe0);
+    -fx-background-radius: 24;
+    -fx-min-width: 48;
+    -fx-min-height: 48;
+    -fx-pref-width: 48;
+    -fx-pref-height: 48;
+}
+
+.tutor-avatar-text {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+/* Large avatar in profile dialog */
+.tutor-avatar-large {
+    -fx-background-color: linear-gradient(to bottom right, #9c7fe0, #c9b8f0);
+    -fx-background-radius: 40;
+    -fx-min-width: 80;
+    -fx-min-height: 80;
+    -fx-pref-width: 80;
+    -fx-pref-height: 80;
+}
+
+.tutor-avatar-large-text {
+    -fx-text-fill: #3d2b7a;
+    -fx-font-weight: bold;
+    -fx-font-size: 26px;
+}
+
+/* ── Availability Badges ─────────────────────────────────────── */
+.badge-available {
+    -fx-background-color: #e8f5e9;
+    -fx-background-radius: 20;
+    -fx-padding: 3 10;
+    -fx-text-fill: #2e7d32;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-unavailable {
+    -fx-background-color: #fce4ec;
+    -fx-background-radius: 20;
+    -fx-padding: 3 10;
+    -fx-text-fill: #c62828;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}

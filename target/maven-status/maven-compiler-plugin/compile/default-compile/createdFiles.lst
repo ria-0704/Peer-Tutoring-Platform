@@ -5,6 +5,7 @@ com\peertutor\util\PasswordUtil.class
 com\peertutor\exception\DatabaseException.class
 com\peertutor\model\Review.class
 com\peertutor\controller\AvailabilityController.class
+com\peertutor\controller\FindTutorsController$TutorEntry.class
 com\peertutor\service\AvailabilityService.class
 com\peertutor\controller\DashboardController.class
 com\peertutor\controller\MySessionsController$1.class

@@ -7,6 +7,7 @@ import com.peertutor.service.UserService;
 import com.peertutor.util.SessionManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
@@ -14,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Dashboard page — welcome message, stats, upcoming sessions.
+ * Dashboard page — welcome message, stats, upcoming sessions, clickable quick actions.
  */
 public class DashboardController {
 
@@ -33,8 +34,8 @@ public class DashboardController {
         root.setPadding(new Insets(32, 36, 32, 36));
         root.setStyle("-fx-background-color: #f5f0ff;");
 
-        int userId = SessionManager.getCurrentUser().getUserId();
-        String name = SessionManager.getCurrentUser().getName();
+        int    userId = SessionManager.getCurrentUser().getUserId();
+        String name   = SessionManager.getCurrentUser().getName();
 
         // ── Header ────────────────────────────────────────────────────────
         Label welcome = new Label("Welcome back, " + name + " 👋");
@@ -51,8 +52,8 @@ public class DashboardController {
         statsRow.setAlignment(Pos.CENTER_LEFT);
         statsRow.getChildren().addAll(
             statCard("👨‍🏫", String.valueOf(tutorCount),   "Available Tutors"),
-            statCard("📚", String.valueOf(subjectCount),  "Subjects Offered"),
-            statCard("📅", String.valueOf(upcomingCount), "Upcoming Sessions")
+            statCard("📚",  String.valueOf(subjectCount),  "Subjects Offered"),
+            statCard("📅",  String.valueOf(upcomingCount), "Upcoming Sessions")
         );
 
         // ── Upcoming sessions ─────────────────────────────────────────────
@@ -60,9 +61,9 @@ public class DashboardController {
         sessTitle.getStyleClass().add("section-title");
 
         VBox sessBox = new VBox(10);
-
         List<Session> upcoming = sessionService.getStudentSessionsByStatus(
                 userId, Session.Status.APPROVED);
+
         if (upcoming.isEmpty()) {
             Label none = new Label("No upcoming sessions. Browse tutors to book one!");
             none.getStyleClass().add("info-label");
@@ -82,9 +83,11 @@ public class DashboardController {
                 VBox info = new VBox(2);
                 Label tutorLbl = new Label("Tutor: " + s.getTutorName());
                 tutorLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #3d2b7a;");
-                String dateTime = (s.getSessionDate() != null ?
-                    s.getSessionDate().format(dateFmt) : "") + "  " +
-                    (s.getStartTime() != null ? s.getStartTime().format(timeFmt) : "") + " – " +
+                String dateTime =
+                    (s.getSessionDate() != null ? s.getSessionDate().format(dateFmt) : "") +
+                    "  " +
+                    (s.getStartTime() != null ? s.getStartTime().format(timeFmt) : "") +
+                    " – " +
                     (s.getEndTime()   != null ? s.getEndTime().format(timeFmt)   : "");
                 Label dtLbl = new Label(dateTime);
                 dtLbl.getStyleClass().add("subtitle-text");
@@ -104,16 +107,23 @@ public class DashboardController {
         Label actTitle = new Label("Quick Actions");
         actTitle.getStyleClass().add("section-title");
 
-        // We just show info cards, navigation is via sidebar
         HBox actRow = new HBox(16);
         actRow.getChildren().addAll(
-            actionCard("🔍", "Find a Tutor",   "Browse available tutors and subjects"),
-            actionCard("🎓", "Be a Tutor",      "Create or update your tutor profile"),
-            actionCard("📋", "My Sessions",     "View all your session bookings")
+            actionCard("🔍", "Find a Tutor",
+                "Browse available tutors and subjects",
+                MainLayoutController.Page.FIND_TUTORS),
+            actionCard("🎓", "Be a Tutor",
+                "Create or update your tutor profile",
+                MainLayoutController.Page.TUTOR_PROFILE),
+            actionCard("📋", "My Sessions",
+                "View all your session bookings",
+                MainLayoutController.Page.MY_SESSIONS)
         );
 
         root.getChildren().addAll(welcome, sub, statsRow, sessTitle, sessBox, actTitle, actRow);
     }
+
+    // ── Helpers ───────────────────────────────────────────────────────────
 
     private VBox statCard(String icon, String value, String label) {
         VBox card = new VBox(4);
@@ -129,19 +139,33 @@ public class DashboardController {
         return card;
     }
 
-    private VBox actionCard(String icon, String title, String desc) {
-        VBox card = new VBox(6);
-        card.getStyleClass().addAll("card", "card-hover");
+    /**
+     * Builds a clickable quick-action card.
+     * The entire card area responds to click and shows hand cursor + hover effect.
+     */
+    private VBox actionCard(String icon, String title, String desc,
+                            MainLayoutController.Page destination) {
+        VBox card = new VBox(8);
+        card.getStyleClass().addAll("card", "action-card");
         card.setPrefWidth(220);
         card.setAlignment(Pos.TOP_LEFT);
+        card.setCursor(Cursor.HAND);
+
         Label iconLbl  = new Label(icon);
-        iconLbl.setStyle("-fx-font-size:24px;");
+        iconLbl.setStyle("-fx-font-size:28px;");
+
         Label titleLbl = new Label(title);
-        titleLbl.setStyle("-fx-font-weight: bold; -fx-font-size:14px; -fx-text-fill:#3d2b7a;");
-        Label descLbl  = new Label(desc);
+        titleLbl.getStyleClass().add("action-card-title");
+
+        Label descLbl = new Label(desc);
         descLbl.getStyleClass().add("subtitle-text");
         descLbl.setWrapText(true);
+
         card.getChildren().addAll(iconLbl, titleLbl, descLbl);
+
+        // Navigate to the target page when the card is clicked anywhere
+        card.setOnMouseClicked(e -> NavigationManager.navigateTo(destination));
+
         return card;
     }
 
